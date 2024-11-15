@@ -20,16 +20,15 @@ EduBridge is an open-source educational platform designed to provide accessible,
 - State Management: StateFlow
 
 ## Screenshots
-
-| Home & Quiz | Learn & Community | Profile & Settings |
+| Home | Interactive Learning | Profile & Achievements |
 |:----------:|:----------------:|:-----------------:|
-| <img src="screenshots/home.png" width="250"/> | <img src="screenshots/learn.png" width="250"/> |<img src="screenshots/profile.png" width="250"/> |
-| *Main dashboard with subjects and AI prompt* | *Subject-wise learning materials* |*User profile with learning stats and achievements*
+| <img src="screenshots/home.png" width="250"/> | <img src="screenshots/learn.png" width="250"/> | <img src="screenshots/profile.png" width="250"/> |
+| *Main dashboard with subjects and AI prompt* | *Subject-wise learning materials* | *User profile with learning stats and achievements* |
 
-| Profile & Settings | Profile & Settings |
-|:-----------------:|:-----------------:|
-| <img src="screenshots/profile.png" width="250"/> |<img src="screenshots/profile.png" width="250"/> |
-| *User profile with learning stats and achievements* | *User profile with learning stats and achievements* |
+| Quiz Section | Study Groups | Discussion Forums |
+|:----------:|:----------------:|:-----------------:|
+| <img src="screenshots/quiz.png" width="250"/> | <img src="screenshots/studygroups.png" width="250"/> | <img src="screenshots/community.png" width="250"/> |
+| *Intuitive Quiz Section for Practice and Revision* | *Study Groups According to Subjects* | *Discussion Forums for Doubts* |
 
 ## Getting Started
 
