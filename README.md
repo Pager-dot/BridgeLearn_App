@@ -1,7 +1,7 @@
-# EduBridge: AI-Powered Learning Platform
+# BridgeLearn: AI-Powered Learning Platform
 
 ## Overview
-EduBridge is an open-source educational platform designed to provide accessible, interactive learning experiences for students, with a focus on 7th-grade science education. The project is built using Kotlin and Jetpack Compose for Android.
+BridgeLearn is an open-source educational platform designed to provide accessible, interactive learning experiences for students, with a focus on 7th-grade science education. The project is built using Kotlin and Jetpack Compose for Android.
 
 ## Features
 
@@ -42,11 +42,11 @@ EduBridge is an open-source educational platform designed to provide accessible,
 1. Fork the repository
 2. Clone your fork:
 ```bash
-git clone https://github.com/YOUR-USERNAME/EduBridge.git
+git clone https://github.com/YOUR-USERNAME/BridgeLearn.git
 ```
 3. Add upstream remote:
 ```bash
-git remote add upstream https://github.com/pratheekv39/EduBridge.git
+git remote add upstream https://github.com/pratheekv39/BridgeLearn.git
 ```
 4. Create a new branch for your feature:
 ```bash
@@ -127,4 +127,4 @@ This project is licensed under the MIT License - see LICENSE.md for details
 
 ## Contact
 - Project Lead: [@pratheekv39](https://github.com/pratheekv39)
-- Project Link: [https://github.com/pratheekv39/EduBridge](https://github.com/pratheekv39/EduBridge)
+- Project Link: [https://github.com/pratheekv39/BridgeLearn](https://github.com/pratheekv39/BridgeLearn)
