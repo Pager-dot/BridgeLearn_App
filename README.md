@@ -19,6 +19,18 @@ EduBridge is an open-source educational platform designed to provide accessible,
 - Navigation: Compose Navigation
 - State Management: StateFlow
 
+## Screenshots
+
+| Home & Quiz | Learn & Community | Profile & Settings |
+|:----------:|:----------------:|:-----------------:|
+| <img src="screenshots/home.png" width="250"/> | <img src="screenshots/learn.png" width="250"/> |<img src="screenshots/profile.png" width="250"/> |
+| *Main dashboard with subjects and AI prompt* | *Subject-wise learning materials* |*User profile with learning stats and achievements*
+
+| Profile & Settings | Profile & Settings |
+|:-----------------:|:-----------------:|
+| <img src="screenshots/profile.png" width="250"/> |<img src="screenshots/profile.png" width="250"/> |
+| *User profile with learning stats and achievements* | *User profile with learning stats and achievements* |
+
 ## Getting Started
 
 ### Prerequisites
