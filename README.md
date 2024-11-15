@@ -42,11 +42,11 @@ BridgeLearn is an open-source educational platform designed to provide accessibl
 1. Fork the repository
 2. Clone your fork:
 ```bash
-git clone https://github.com/YOUR-USERNAME/BridgeLearn.git
+git clone https://github.com/YOUR-USERNAME/BridgeLearn_App.git
 ```
 3. Add upstream remote:
 ```bash
-git remote add upstream https://github.com/pratheekv39/BridgeLearn.git
+git remote add upstream https://github.com/pratheekv39/BridgeLearn_App.git
 ```
 4. Create a new branch for your feature:
 ```bash
