@@ -1,5 +1,10 @@
 package pratheekv39.bridgelearn.io
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -11,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
@@ -19,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -28,7 +35,6 @@ data class UserProfile(
     val name: String,
     val email: String,
     val grade: String,
-    val avatarUrl: String? = null,
     val bio: String = "",
     val completedLessons: Int = 0,
     val quizzesTaken: Int = 0,
@@ -71,6 +77,8 @@ class ProfileViewModel : ViewModel() {
         )
     )
     val userProfile = _userProfile.asStateFlow()
+    private val _profilePicture = MutableStateFlow<Uri?>(null)
+    val profilePicture = _profilePicture.asStateFlow()
 
     val achievements = listOf(
         Achievement(
@@ -99,6 +107,9 @@ class ProfileViewModel : ViewModel() {
     fun updatePreferences(preferences: UserPreferences) {
         // Update preferences logic
     }
+    fun updateProfilePicture(uri: Uri?) {
+        _profilePicture.value = uri
+    }
 }
 
 @Composable
@@ -109,6 +120,7 @@ fun ProfileScreen(
     onDarkModeChanged: (Boolean) -> Unit
 ) {
     val userProfile by viewModel.userProfile.collectAsState()
+    val profilePicture by viewModel.profilePicture.collectAsState()
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -116,7 +128,11 @@ fun ProfileScreen(
     ) {
         // Profile Header
         item {
-            ProfileHeader(userProfile)
+            ProfileHeader(
+                profile = userProfile,
+                profilePicture = profilePicture,
+                onProfilePictureChanged = { viewModel.updateProfilePicture(it)}
+            )
         }
 
         // Stats Section
@@ -147,7 +163,15 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileHeader(profile: UserProfile) {
+fun ProfileHeader(
+    profile: UserProfile,
+    profilePicture: Uri?,
+    onProfilePictureChanged: (Uri?) -> Unit
+) {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri -> onProfilePictureChanged(uri) }
+    )
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -158,29 +182,25 @@ fun ProfileHeader(profile: UserProfile) {
         Surface(
             modifier = Modifier
                 .size(120.dp)
-                .clip(CircleShape),
+                .clip(CircleShape).clickable { launcher.launch("image/*") },
             color = MaterialTheme.colorScheme.primaryContainer
         ) {
-            if (profile.avatarUrl != null) {
-                // TODO: Implement image loading
-                // Currently just showing a placeholder
-                Icon(
-                    Icons.Default.Person,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .fillMaxSize()
-                )
-            } else {
-                Icon(
-                    Icons.Default.Person,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .fillMaxSize()
+            if (profilePicture != null) {
+                Image(
+                    painter = rememberAsyncImagePainter(profilePicture),
+                    contentDescription = "Profile Picture",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
-
+            else {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Default Profile Picture",
+                    tint = Color.White,
+                    modifier = Modifier.size(80.dp)
+                )
+            }
         }
 
 
@@ -207,7 +227,7 @@ fun ProfileHeader(profile: UserProfile) {
 
         // Edit Profile Button
         OutlinedButton(
-            onClick = { /* TODO: Implement edit profile */ },
+            onClick = { launcher.launch("image/*") },
             modifier = Modifier.padding(top = 8.dp)
         ) {
             Icon(Icons.Default.Edit, contentDescription = null)
