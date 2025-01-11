@@ -16,8 +16,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -75,8 +77,11 @@ sealed class Screen(
 fun NavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Home.route
+    startDestination: String = Screen.Home.route ,
+    themeViewModel: ThemeViewModel = viewModel()
+
 ) {
+    val darkMode by themeViewModel.darkMode.collectAsState()
     val screens = listOf(
         Screen.Home,
         Screen.Quiz,
@@ -139,10 +144,12 @@ fun NavGraph(
 
             composable(Screen.Community.route) { CommunityScreen(navController) }
 
-            composable(Screen.Profile.route) { ProfileScreen(navController) }
+            composable(Screen.Profile.route) { ProfileScreen(navController, darkMode = darkMode,
+                onDarkModeChanged = {isChecked ->
+                themeViewModel.setDarkMode(isChecked)})
 
-
-            composable(
+            }
+                composable(
                 route = Screen.Subject.route,
                 arguments = listOf(
                     navArgument("subjectId") {

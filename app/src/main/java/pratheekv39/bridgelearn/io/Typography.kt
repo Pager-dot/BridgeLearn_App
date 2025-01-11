@@ -46,7 +46,7 @@ fun EduBridgeTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        darkTheme -> DarkColorScheme
+        darkTheme -> updatedDarkColorScheme
         else -> LightColorScheme
     }
 

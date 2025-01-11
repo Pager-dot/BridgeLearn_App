@@ -2,6 +2,7 @@ package pratheekv39.bridgelearn.io
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -23,17 +24,22 @@ val AccentOrange = Color(0xFFF78154)
 val BackgroundLight = Color(0xFFF8F9FA)
 val BackgroundDark = Color(0xFF1A1B1E)
 
-val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
-    background = BackgroundDark,
-    surface = DarkBlue,
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White,
+val updatedDarkColorScheme = darkColorScheme(
+    primary = Color(0XFF37B6E9),       // Lavender Purple
+    secondary = Color(0xFF03DAC6),     // Aqua Green
+    tertiary = Color(0xFFFFB74D),      // Warm Amber
+    background = Color(0xFF222834),    // Soft Black
+    surface = Color(0xFF353F54),       // Darker Gray
+    onPrimary = Color.Black,           // Text/icons on primary buttons
+    onSecondary = Color.Black,         // Text/icons on secondary buttons
+    onTertiary = Color(0XFF37B6E9),          // Text/icons on tertiary elements
+    onBackground = Color(0xFFE0E0E0),  // Light Gray for text
+    onSurface = Color(0xFFFFFFFF),     // White for high-emphasis content
+    error = Color(0xFFCF6679),         // Muted Red
+    surfaceVariant = Color(0xFF2C2C2C),
+
+    primaryContainer=Color(0XFF37B6E9),
+    onPrimaryContainer=Color.Black
 )
 
 val LightColorScheme = lightColorScheme(
@@ -48,3 +54,20 @@ val LightColorScheme = lightColorScheme(
     onBackground = Color.Black,
     onSurface = Color.Black,
 )
+
+@Composable
+fun HomeTheme(darkTheme:Boolean,
+              content: @Composable () -> Unit){
+    val colorscheme=if(darkTheme){
+        updatedDarkColorScheme
+    }
+    else{
+        LightColorScheme
+    }
+    MaterialTheme(
+        colorScheme = colorscheme,
+        content=content
+
+    )
+
+}
