@@ -7,11 +7,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,7 +38,6 @@ data class UserProfile(
 )
 
 data class UserPreferences(
-    val isDarkMode: Boolean = false,
     val notificationsEnabled: Boolean = true,
     val language: String = "English",
     val studyReminderTime: String = "18:00",
@@ -88,7 +90,6 @@ class ProfileViewModel : ViewModel() {
             progress = 0.6f
         )
     )
-
     // TODO: Implement profile update functionality
     fun updateProfile(name: String, bio: String) {
         // Update profile logic
@@ -103,7 +104,9 @@ class ProfileViewModel : ViewModel() {
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfileViewModel = viewModel() ,
+    darkMode: Boolean,
+    onDarkModeChanged: (Boolean) -> Unit
 ) {
     val userProfile by viewModel.userProfile.collectAsState()
 
@@ -135,7 +138,10 @@ fun ProfileScreen(
 
         // Settings Section
         item {
-            SettingsSection(userProfile.preferences)
+            SettingsSection( preferences = userProfile.preferences,
+                darkMode = darkMode,
+                onDarkModeChanged = onDarkModeChanged
+            )
         }
     }
 }
@@ -174,7 +180,9 @@ fun ProfileHeader(profile: UserProfile) {
                         .fillMaxSize()
                 )
             }
+
         }
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -323,7 +331,10 @@ fun AchievementCard(
 }
 
 @Composable
-fun SettingsSection(preferences: UserPreferences) {
+fun SettingsSection(preferences: UserPreferences,
+                    darkMode: Boolean,
+                    onDarkModeChanged: (Boolean) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -342,10 +353,10 @@ fun SettingsSection(preferences: UserPreferences) {
             SettingItem(
                 title = "Dark Mode",
                 icon = Icons.Default.DarkMode,
-                trailing = {
+                {
                     Switch(
-                        checked = preferences.isDarkMode,
-                        onCheckedChange = { /* TODO: Implement theme change */ }
+                        checked =darkMode,
+                        onCheckedChange ={isChecked -> onDarkModeChanged(isChecked) }
                     )
                 }
             )
