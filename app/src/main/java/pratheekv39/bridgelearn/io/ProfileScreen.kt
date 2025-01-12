@@ -1,8 +1,14 @@
 package pratheekv39.bridgelearn.io
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -10,9 +16,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -70,6 +78,9 @@ class ProfileViewModel : ViewModel() {
     )
     val userProfile = _userProfile.asStateFlow()
 
+    private val _profileImageUri = MutableStateFlow<Uri?>(null)
+    val profileImageUri = _profileImageUri.asStateFlow()
+
     val achievements = listOf(
         Achievement(
             id = "1",
@@ -98,6 +109,10 @@ class ProfileViewModel : ViewModel() {
     fun updatePreferences(preferences: UserPreferences) {
         // Update preferences logic
     }
+
+    fun updateProfileImage(uri: Uri?) {
+        _profileImageUri.value = uri
+    }
 }
 
 @Composable
@@ -106,6 +121,13 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel()
 ) {
     val userProfile by viewModel.userProfile.collectAsState()
+    val profileImageUri by viewModel.profileImageUri.collectAsState()
+
+    // Handle image update when selected
+    val updateProfileImage = { uri: Uri? ->
+        // Handle the updated profile image (e.g., save the URI to the ViewModel or local storage)
+        viewModel.updateProfileImage(uri)
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -113,7 +135,7 @@ fun ProfileScreen(
     ) {
         // Profile Header
         item {
-            ProfileHeader(userProfile)
+            ProfileHeader(userProfile, onImageSelected = updateProfileImage)
         }
 
         // Stats Section
@@ -141,7 +163,18 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileHeader(profile: UserProfile) {
+fun ProfileHeader(profile: UserProfile, onImageSelected: (Uri?) -> Unit) {
+
+    var isImageZoomed by remember { mutableStateOf(false) }
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        selectedImageUri = uri // Save the selected image URI
+        onImageSelected(uri) // Pass the URI back to the parent
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -152,7 +185,8 @@ fun ProfileHeader(profile: UserProfile) {
         Surface(
             modifier = Modifier
                 .size(120.dp)
-                .clip(CircleShape),
+                .clip(CircleShape)
+                .clickable { isImageZoomed = true },
             color = MaterialTheme.colorScheme.primaryContainer
         ) {
             if (profile.avatarUrl != null) {
@@ -197,9 +231,76 @@ fun ProfileHeader(profile: UserProfile) {
             )
         }
 
+        if (isImageZoomed) {
+            Dialog(
+                onDismissRequest = { isImageZoomed = false }
+            ) {
+                Box (
+                    modifier = Modifier
+                        .size(400.dp)
+                        .background(Color.Black.copy(alpha = 0.3f))
+                        .clip(RoundedCornerShape(16.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(300.dp) // Ensure the container is square
+                            .clip(CircleShape)
+                            .clip(RoundedCornerShape(16.dp)),
+                    ) {
+                        // Zoomed Image
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape), // Clip as a circle
+                            color = MaterialTheme.colorScheme.primaryContainer
+                        ) {
+                            if (profile.avatarUrl != null) {
+                                Icon(
+                                    Icons.Default.Person,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .padding(32.dp)
+                                        .fillMaxSize()
+                                )
+                            } else {
+                                Icon(
+                                    Icons.Default.Person,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .padding(32.dp)
+                                        .fillMaxSize()
+                                )
+                            }
+                        }
+                    }
+
+                    // Close button
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                    ) {
+                        IconButton(
+                            onClick = { isImageZoomed = false },
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = Color.White,
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
         // Edit Profile Button
         OutlinedButton(
-            onClick = { /* TODO: Implement edit profile */ },
+            onClick = { imagePickerLauncher.launch("image/*") },
             modifier = Modifier.padding(top = 8.dp)
         ) {
             Icon(Icons.Default.Edit, contentDescription = null)
