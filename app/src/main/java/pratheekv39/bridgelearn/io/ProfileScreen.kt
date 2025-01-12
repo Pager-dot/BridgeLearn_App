@@ -1,5 +1,6 @@
 package pratheekv39.bridgelearn.io
 
+import android.util.Log
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,6 +27,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import coil.compose.rememberImagePainter
+import androidx.compose.foundation.Image
 
 // Data Classes
 data class UserProfile(
@@ -135,7 +138,11 @@ fun ProfileScreen(
     ) {
         // Profile Header
         item {
-            ProfileHeader(userProfile, onImageSelected = updateProfileImage)
+            ProfileHeader(
+                profile = userProfile,
+                onImageSelected = updateProfileImage,
+                profileImageUri = profileImageUri
+            )
         }
 
         // Stats Section
@@ -163,16 +170,23 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileHeader(profile: UserProfile, onImageSelected: (Uri?) -> Unit) {
+fun ProfileHeader(
+    profile: UserProfile,
+    onImageSelected: (Uri?) -> Unit,
+    profileImageUri: Uri?
+) {
 
     var isImageZoomed by remember { mutableStateOf(false) }
-    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        selectedImageUri = uri // Save the selected image URI
-        onImageSelected(uri) // Pass the URI back to the parent
+        Log.d("ProfileHeader", "Image picker result: $uri")
+        if (uri != null) {
+            // Log the URI and pass it back to the parent function
+            onImageSelected(uri) // Pass the URI back to the parent
+        } else {
+            Log.d("ProfileHeader", "No image selected")
+        }
     }
 
     Column(
@@ -189,16 +203,15 @@ fun ProfileHeader(profile: UserProfile, onImageSelected: (Uri?) -> Unit) {
                 .clickable { isImageZoomed = true },
             color = MaterialTheme.colorScheme.primaryContainer
         ) {
-            if (profile.avatarUrl != null) {
-                // TODO: Implement image loading
-                // Currently just showing a placeholder
-                Icon(
-                    Icons.Default.Person,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .fillMaxSize()
+            Log.d("ProfileHeader", "Loading profile image URI: $profileImageUri")
+            if (profileImageUri != null) {
+                Image(
+                    painter = rememberImagePainter(profileImageUri),
+                    contentDescription = "Profile Picture",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
                 )
+                Log.d("ProfileHeader", "Image loaded from URI: $profileImageUri")
             } else {
                 Icon(
                     Icons.Default.Person,
@@ -255,13 +268,13 @@ fun ProfileHeader(profile: UserProfile, onImageSelected: (Uri?) -> Unit) {
                                 .clip(CircleShape), // Clip as a circle
                             color = MaterialTheme.colorScheme.primaryContainer
                         ) {
-                            if (profile.avatarUrl != null) {
-                                Icon(
-                                    Icons.Default.Person,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(32.dp)
-                                        .fillMaxSize()
+                            if (profileImageUri != null) {
+                                Log.d("ProfileHeader", "Displaying zoomed image: $profileImageUri")
+                                Image(
+                                    painter = rememberImagePainter(profileImageUri),
+                                    contentDescription = "Zoomed Profile Picture",
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop
                                 )
                             } else {
                                 Icon(
@@ -300,7 +313,10 @@ fun ProfileHeader(profile: UserProfile, onImageSelected: (Uri?) -> Unit) {
 
         // Edit Profile Button
         OutlinedButton(
-            onClick = { imagePickerLauncher.launch("image/*") },
+            onClick = {
+                Log.d("ProfileHeader", "Opening image picker")
+                imagePickerLauncher.launch("image/*")
+            },
             modifier = Modifier.padding(top = 8.dp)
         ) {
             Icon(Icons.Default.Edit, contentDescription = null)
