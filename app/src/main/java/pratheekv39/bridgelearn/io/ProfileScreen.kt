@@ -27,8 +27,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import coil.compose.rememberImagePainter
-import androidx.compose.foundation.Image
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import coil.compose.AsyncImage
+import kotlinx.coroutines.launch
 
 // Data Classes
 data class UserProfile(
@@ -68,8 +74,21 @@ data class Achievement(
     val progress: Float = 0f
 )
 
+class ProfileViewModelFactory(private val context: Context): ViewModelProvider.Factory {
+    override fun<T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ProfileViewModel(context) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
 // ViewModel
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(context: Context) : ViewModel() {
+
+    private val sharedPreferences = context.getSharedPreferences("UserProfile", Context.MODE_PRIVATE)
+
     private val _userProfile = MutableStateFlow(
         UserProfile(
             id = "1",
@@ -83,6 +102,11 @@ class ProfileViewModel : ViewModel() {
 
     private val _profileImageUri = MutableStateFlow<Uri?>(null)
     val profileImageUri = _profileImageUri.asStateFlow()
+
+    init {
+        val savedUriString = sharedPreferences.getString("profileImageUri", null)
+        _profileImageUri.value = savedUriString?.let { Uri.parse(it) }
+    }
 
     val achievements = listOf(
         Achievement(
@@ -115,13 +139,19 @@ class ProfileViewModel : ViewModel() {
 
     fun updateProfileImage(uri: Uri?) {
         _profileImageUri.value = uri
+
+        viewModelScope.launch {
+            sharedPreferences.edit()
+                .putString("profileImageUri", uri?.toString())
+                .apply()
+        }
     }
 }
 
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfileViewModel = viewModel(factory = ProfileViewModelFactory(LocalContext.current))
 ) {
     val userProfile by viewModel.userProfile.collectAsState()
     val profileImageUri by viewModel.profileImageUri.collectAsState()
@@ -175,7 +205,6 @@ fun ProfileHeader(
     onImageSelected: (Uri?) -> Unit,
     profileImageUri: Uri?
 ) {
-
     var isImageZoomed by remember { mutableStateOf(false) }
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -205,11 +234,13 @@ fun ProfileHeader(
         ) {
             Log.d("ProfileHeader", "Loading profile image URI: $profileImageUri")
             if (profileImageUri != null) {
-                Image(
-                    painter = rememberImagePainter(profileImageUri),
+                AsyncImage(
+                    model = profileImageUri,
                     contentDescription = "Profile Picture",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    placeholder = painterResource(R.drawable.ic_launcher_foreground), // Placeholder image
+                    error = painterResource(R.drawable.ic_launcher_foreground),      // Error fallback
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
                 Log.d("ProfileHeader", "Image loaded from URI: $profileImageUri")
             } else {
@@ -270,12 +301,15 @@ fun ProfileHeader(
                         ) {
                             if (profileImageUri != null) {
                                 Log.d("ProfileHeader", "Displaying zoomed image: $profileImageUri")
-                                Image(
-                                    painter = rememberImagePainter(profileImageUri),
-                                    contentDescription = "Zoomed Profile Picture",
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentScale = ContentScale.Crop
+                                AsyncImage(
+                                    model = profileImageUri,
+                                    contentDescription = "Profile Picture",
+                                    placeholder = painterResource(R.drawable.ic_launcher_foreground), // Placeholder image
+                                    error = painterResource(R.drawable.ic_launcher_foreground),      // Error fallback
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
                                 )
+
                             } else {
                                 Icon(
                                     Icons.Default.Person,
@@ -314,7 +348,6 @@ fun ProfileHeader(
         // Edit Profile Button
         OutlinedButton(
             onClick = {
-                Log.d("ProfileHeader", "Opening image picker")
                 imagePickerLauncher.launch("image/*")
             },
             modifier = Modifier.padding(top = 8.dp)
