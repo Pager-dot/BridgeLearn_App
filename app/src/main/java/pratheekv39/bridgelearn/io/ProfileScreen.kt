@@ -1,33 +1,39 @@
 package pratheekv39.bridgelearn.io
 
+import android.app.Application
+import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.AsyncImage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 // Data Classes
 data class UserProfile(
@@ -65,8 +71,21 @@ data class Achievement(
     val progress: Float = 0f
 )
 
+class ProfileViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ProfileViewModel(application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
 // ViewModel
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val sharedPreferences = application.getSharedPreferences("UserProfile", Context.MODE_PRIVATE)
+
     private val _userProfile = MutableStateFlow(
         UserProfile(
             id = "1",
@@ -77,8 +96,14 @@ class ProfileViewModel : ViewModel() {
         )
     )
     val userProfile = _userProfile.asStateFlow()
-    private val _profilePicture = MutableStateFlow<Uri?>(null)
-    val profilePicture = _profilePicture.asStateFlow()
+
+    private val _profileImageUri = MutableStateFlow<Uri?>(null)
+    val profileImageUri = _profileImageUri.asStateFlow()
+
+    init {
+        val savedUriString = sharedPreferences.getString("profileImageUri", null)
+        _profileImageUri.value = savedUriString?.let { Uri.parse(it) }
+    }
 
     val achievements = listOf(
         Achievement(
@@ -107,8 +132,15 @@ class ProfileViewModel : ViewModel() {
     fun updatePreferences(preferences: UserPreferences) {
         // Update preferences logic
     }
-    fun updateProfilePicture(uri: Uri?) {
-        _profilePicture.value = uri
+
+    fun updateProfileImage(uri: Uri?) {
+        _profileImageUri.value = uri
+
+        viewModelScope.launch {
+            sharedPreferences.edit()
+                .putString("profileImageUri", uri?.toString())
+                .apply()
+        }
     }
 }
 
@@ -119,8 +151,15 @@ fun ProfileScreen(
     darkMode: Boolean,
     onDarkModeChanged: (Boolean) -> Unit
 ) {
+
     val userProfile by viewModel.userProfile.collectAsState()
-    val profilePicture by viewModel.profilePicture.collectAsState()
+    val profileImageUri by viewModel.profileImageUri.collectAsState()
+
+    // Handle image update when selected
+    val updateProfileImage = { uri: Uri? ->
+        // Handle the updated profile image (e.g., save the URI to the ViewModel or local storage)
+        viewModel.updateProfileImage(uri)
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -130,8 +169,8 @@ fun ProfileScreen(
         item {
             ProfileHeader(
                 profile = userProfile,
-                profilePicture = profilePicture,
-                onProfilePictureChanged = { viewModel.updateProfilePicture(it)}
+                onImageSelected = updateProfileImage,
+                profileImageUri = profileImageUri
             )
         }
 
@@ -165,13 +204,17 @@ fun ProfileScreen(
 @Composable
 fun ProfileHeader(
     profile: UserProfile,
-    profilePicture: Uri?,
-    onProfilePictureChanged: (Uri?) -> Unit
+    onImageSelected: (Uri?) -> Unit,
+    profileImageUri: Uri?
 ) {
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri -> onProfilePictureChanged(uri) }
-    )
+    var isImageZoomed by remember { mutableStateOf(false) }
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            onImageSelected(uri) // Pass the URI back to the parent
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -182,13 +225,15 @@ fun ProfileHeader(
         Surface(
             modifier = Modifier
                 .size(120.dp)
-                .clip(CircleShape).clickable { launcher.launch("image/*") },
+                .clip(CircleShape).clickable { isImageZoomed = true },
             color = MaterialTheme.colorScheme.primaryContainer
         ) {
-            if (profilePicture != null) {
-                Image(
-                    painter = rememberAsyncImagePainter(profilePicture),
+            if (profileImageUri != null) {
+                AsyncImage(
+                    model = profileImageUri,
                     contentDescription = "Profile Picture",
+                    placeholder = painterResource(R.drawable.ic_launcher_foreground), // Placeholder image
+                    error = painterResource(R.drawable.ic_launcher_foreground),      // Error fallback
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -225,9 +270,75 @@ fun ProfileHeader(
             )
         }
 
+        if (isImageZoomed) {
+            Dialog(
+                onDismissRequest = { isImageZoomed = false }
+            ) {
+                Box (
+                    modifier = Modifier
+                        .size(400.dp)
+                        .background(Color.Black.copy(alpha = 0.3f))
+                        .clip(RoundedCornerShape(16.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(250.dp), // Ensure the container is square
+                    ) {
+                        // Zoomed Image
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            color = MaterialTheme.colorScheme.primaryContainer
+                        ) {
+                            if (profileImageUri != null) {
+                                AsyncImage(
+                                    model = profileImageUri,
+                                    contentDescription = "Profile Picture",
+                                    placeholder = painterResource(R.drawable.ic_launcher_foreground), // Placeholder image
+                                    error = painterResource(R.drawable.ic_launcher_foreground),      // Error fallback
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+
+                            } else {
+                                Icon(
+                                    Icons.Default.Person,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .padding(32.dp)
+                                        .fillMaxSize()
+                                )
+                            }
+                        }
+                    }
+
+                    // Close button
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                    ) {
+                        IconButton(
+                            onClick = { isImageZoomed = false },
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = Color.White,
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
         // Edit Profile Button
         OutlinedButton(
-            onClick = { launcher.launch("image/*") },
+            onClick = { imagePickerLauncher.launch("image/*") },
             modifier = Modifier.padding(top = 8.dp)
         ) {
             Icon(Icons.Default.Edit, contentDescription = null)
