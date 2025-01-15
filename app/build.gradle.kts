@@ -52,7 +52,7 @@ android {
 dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2023.10.01")
     implementation(composeBom)
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(libs.coil.compose)
     androidTestImplementation(composeBom)
 
     implementation("androidx.compose.ui:ui-tooling:1.3.0") // for debugging

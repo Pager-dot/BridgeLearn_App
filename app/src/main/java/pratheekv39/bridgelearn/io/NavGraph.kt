@@ -89,39 +89,43 @@ fun NavGraph(
         Screen.Community,
         Screen.Profile
     )
-
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
 
-                screens.forEach { screen ->
-                    NavigationBarItem(
-                        icon = { screen.icon() },
-                        label = {
-                            Text(
-                                text = screen.title,
-                                maxLines = 1,
-                                softWrap = false
-                            )
-                        },
-                        selected = currentRoute == screen.route,
-                        onClick = {
-                            if (currentRoute != screen.route) {
-                                navController.navigate(screen.route) {
-                                    popUpTo(navController.graph.startDestinationId) {
-                                        saveState = true
+            // Hide the bottom bar when on the "Interactive" screen
+            if (currentRoute != "Interactive") {
+                NavigationBar {
+                    screens.forEach { screen ->
+                        NavigationBarItem(
+                            icon = { screen.icon() },
+                            label = {
+                                Text(
+                                    text = screen.title,
+                                    maxLines = 1,
+                                    softWrap = false
+                                )
+                            },
+                            selected = currentRoute == screen.route,
+                            onClick = {
+                                if (currentRoute != screen.route) {
+                                    navController.navigate(screen.route) {
+                                        popUpTo(navController.graph.startDestinationId) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }
+
+
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -138,6 +142,9 @@ fun NavGraph(
 
             composable(Screen.Quiz.route) {
                 QuizScreen()
+            }
+            composable("Interactive") {
+                AcidBaseInteractiveLab(navController)
             }
 
             composable(Screen.Learn.route) { LearnScreen(navController) }

@@ -24,9 +24,10 @@ class LearnViewModel : ViewModel() {
             name = "Chemistry",
             description = "Explore matter and reactions",
             learningContent = listOf(
-                LearningContent("1", "Atomic Structure", ContentType.VIDEO, 0.6f),
-                LearningContent("2", "Chemical Bonding", ContentType.SIMULATION, 0.4f),
-                LearningContent("3", "Periodic Table", ContentType.READING, 0.2f)
+                LearningContent("1", "Acids and Base Simulator", ContentType.SIMULATION, 0.6f),
+                LearningContent("2", "Atomic Structure", ContentType.VIDEO, 0.6f),
+                LearningContent("3", "Chemical Bonding", ContentType.SIMULATION, 0.4f),
+                LearningContent("4", "Periodic Table", ContentType.READING, 0.2f)
             )
         )
     )

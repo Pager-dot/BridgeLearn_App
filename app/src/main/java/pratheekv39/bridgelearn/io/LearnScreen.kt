@@ -1,5 +1,6 @@
 package pratheekv39.bridgelearn.io
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -33,7 +34,8 @@ fun LearnScreen(
         } else {
             SubjectLearningContent(
                 subject = selectedSubject!!,
-                onBackPress = { viewModel.clearSelectedSubject() }
+                onBackPress = { viewModel.clearSelectedSubject() },
+                navController
             )
         }
     }
@@ -101,7 +103,8 @@ fun SubjectCard(
 @Composable
 fun SubjectLearningContent(
     subject: LearnSubject,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    navController: NavController
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
@@ -120,16 +123,22 @@ fun SubjectLearningContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(subject.learningContent) { content ->
-                LearningContentCard(content)
+                LearningContentCard(content,navController)
             }
         }
     }
 }
 
 @Composable
-fun LearningContentCard(content: LearningContent) {
+fun LearningContentCard(content: LearningContent,navController: NavController) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().clickable {
+            if(content.id=="1"){
+                navController.navigate("Interactive")
+
+
+            }
+        }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
