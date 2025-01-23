@@ -14,6 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun AIPromptCard(
@@ -23,7 +28,10 @@ fun AIPromptCard(
     var text by remember { mutableStateOf("") }
 
     Card(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -34,7 +42,7 @@ fun AIPromptCard(
                     text = it
                 },
                 label = { Text("Ask your question") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }

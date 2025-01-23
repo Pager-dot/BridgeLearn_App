@@ -17,6 +17,8 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
+val bloomBlue = Color(0xFF136FFD)
+
 // Custom colors for EduBridge
 val LightBlue = Color(0xFF6B9AC4)
 val DarkBlue = Color(0xFF2E4057)
@@ -36,10 +38,10 @@ val updatedDarkColorScheme = darkColorScheme(
     onBackground = Color(0xFFE0E0E0),  // Light Gray for text
     onSurface = Color(0xFFFFFFFF),     // White for high-emphasis content
     error = Color(0xFFCF6679),         // Muted Red
-    surfaceVariant = Color(0xFF2C2C2C),
+    surfaceVariant = Color(0xFF136FFD),
 
     primaryContainer=Color(0XFF37B6E9),
-    onPrimaryContainer=Color.Black
+    onPrimaryContainer=Color.Black,
 )
 
 val LightColorScheme = lightColorScheme(
@@ -52,6 +54,7 @@ val LightColorScheme = lightColorScheme(
     onSecondary = Color.White,
     onTertiary = Color.White,
     onBackground = Color.Black,
+    surfaceVariant = Color(0xFF136FFD),
     onSurface = Color.Black,
 )
 
@@ -66,6 +69,7 @@ fun HomeTheme(darkTheme:Boolean,
     }
     MaterialTheme(
         colorScheme = colorscheme,
+        typography = Typography,
         content=content
 
     )

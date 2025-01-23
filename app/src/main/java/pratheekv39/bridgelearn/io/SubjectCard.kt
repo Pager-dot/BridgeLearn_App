@@ -10,9 +10,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun SubjectCard(
@@ -20,66 +24,70 @@ fun SubjectCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val customLightBlue = MaterialTheme.colorScheme.background
+
     Card(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(0.5f) // Take up half the width
             .clickable(onClick = onClick)
-            .padding(vertical = 4.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .padding(vertical = 4.dp, horizontal = 4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant // Change this to your desired color
+        )
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(1f)
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier.size(40.dp)
             ) {
-                Surface(
-                    shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.secondaryContainer,
-                    modifier = Modifier.size(40.dp)
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Book,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-                }
-
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = subject.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = subject.description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                    Icon(
+                        painter = painterResource(id = subject.drawableResId), // Change this to the icon related to the subject
+                        contentDescription = null,
+                        tint = Color.White,
                     )
                 }
             }
 
-            Icon(
-                imageVector = Icons.Default.ArrowForward,
-                contentDescription = "Open ${subject.name}",
-                tint = MaterialTheme.colorScheme.primary
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = subject.name,
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun SubjectCardRow(subjects: List<Subject>, onClick: (Subject) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        subjects.take(2).forEach { subject ->
+            SubjectCard(
+                subject = subject,
+                onClick = { onClick(subject) },
+                modifier = Modifier.weight(1f)
             )
         }
     }
@@ -94,7 +102,9 @@ fun SubjectCardPreview() {
             subject = Subject(
                 id = "physics",
                 name = "Physics",
-                description = "Learn about forces, energy, and the fundamental laws that govern the universe."
+                description = "Learn about forces, energy, and the fundamental laws that govern the universe.",
+                R.drawable.magnet_straight
+
             ),
             onClick = {}
         )

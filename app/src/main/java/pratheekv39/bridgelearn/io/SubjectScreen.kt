@@ -7,7 +7,10 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import java.net.IDN
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,17 +24,32 @@ fun SubjectScreen(
             "physics" -> Subject(
                 "physics",
                 "Physics",
-                "Learn about forces and energy"
+                "Learn about forces and energy",
+                R.drawable.magnet_straight
             )
             "chemistry" -> Subject(
                 "chemistry",
                 "Chemistry",
-                "Explore matter and reactions"
+                "Explore matter and reactions",
+                R.drawable.flask
+            )
+            "biology" -> Subject(
+                "biology",
+                "Biology",
+                "Learn about human body and animals",
+                R.drawable.flower
+            )
+            "computer" -> Subject(
+                "computer",
+                "Computer",
+                "Explore different types of computer tools",
+                R.drawable.math_operations
             )
             else -> Subject(
                 "unknown",
                 "Unknown Subject",
-                "Subject not found"
+                "Subject not found",
+                R.drawable.ic_launcher_foreground
             )
         }
     }
@@ -66,10 +84,12 @@ fun SubjectScreen(
                         Text(
                             text = "Overview",
                             style = MaterialTheme.typography.titleLarge,
+                            color = Color.White,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
                         Text(
                             text = subject.description,
+                            color = Color.White,
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -111,11 +131,13 @@ private fun TopicCard(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White,
             )
             Text(
                 text = description,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White,
             )
         }
     }
@@ -125,7 +147,8 @@ private fun TopicCard(
 data class Subject(
     val id: String,
     val name: String,
-    val description: String
+    val description: String,
+    val drawableResId: Int
 )
 
 data class Question(
