@@ -6,8 +6,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun QuizScreen(
@@ -44,11 +48,22 @@ fun QuizScreen(
     ) {
         if (!showResult) {
             // Quiz Questions
+
+            Text(
+                text = "Test your knowledge",
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Text(
                 text = "Question ${currentQuestionIndex + 1} of ${questions.size}",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             QuestionCard(
                 question = questions[currentQuestionIndex],
@@ -75,6 +90,56 @@ fun QuizScreen(
                 }
             )
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Subject-Wise Quizzes",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item { SubjectCardQuiz("Physics", R.drawable.magnet_straight, Color(0xFFBBDEFB)) }  // Light Blue
+            item { SubjectCardQuiz("Chemistry", R.drawable.flask, Color(0xFFFFCDD2)) } // Light Red
+            item { SubjectCardQuiz("Biology", R.drawable.flower, Color(0xFFC8E6C9)) }   // Light Green
+            item { SubjectCardQuiz("Computer", R.drawable.math_operations, Color(0xFFD1C4E9)) } // Light Purple
+        }
+    }
+}
+
+@Composable
+fun SubjectCardQuiz(subject: String, iconResId: Int, backgroundColor: Color) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(84.dp),
+        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = iconResId),
+                contentDescription = "$subject Icon",
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(end = 16.dp),
+                tint = Color.Unspecified // Use the original icon color
+            )
+            Text(
+                text = subject,
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.Black
+            )
+        }
     }
 }
 
@@ -92,6 +157,7 @@ private fun QuestionCard(
         ) {
             Text(
                 text = question.text,
+                color = Color.White,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
@@ -103,11 +169,11 @@ private fun QuestionCard(
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        containerColor = Color.White,
+                        contentColor = Color.Black
                     )
                 ) {
-                    Text(option)
+                    Text(option, fontFamily = AfacadFontFamily)
                 }
             }
         }
