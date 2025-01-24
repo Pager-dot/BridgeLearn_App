@@ -17,7 +17,8 @@ class LearnViewModel : ViewModel() {
                 LearningContent("1", "Introduction to Forces", ContentType.VIDEO, 0.8f),
                 LearningContent("2", "Newton's Laws", ContentType.SIMULATION, 0.5f),
                 LearningContent("3", "Energy Conservation", ContentType.READING, 0.3f)
-            )
+            ),
+            drawableResId = R.drawable.magnet_straight
         ),
         LearnSubject(
             id = "chemistry",
@@ -28,7 +29,8 @@ class LearnViewModel : ViewModel() {
                 LearningContent("2", "Atomic Structure", ContentType.VIDEO, 0.6f),
                 LearningContent("3", "Chemical Bonding", ContentType.SIMULATION, 0.4f),
                 LearningContent("4", "Periodic Table", ContentType.READING, 0.2f)
-            )
+            ),
+            drawableResId = R.drawable.flask
         )
     )
 
