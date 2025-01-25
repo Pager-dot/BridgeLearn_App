@@ -14,9 +14,10 @@ class LearnViewModel : ViewModel() {
             name = "Physics",
             description = "Learn about forces and energy",
             learningContent = listOf(
-                LearningContent("1", "Introduction to Forces", ContentType.VIDEO, 0.8f),
-                LearningContent("2", "Newton's Laws", ContentType.SIMULATION, 0.5f),
-                LearningContent("3", "Energy Conservation", ContentType.READING, 0.3f)
+                LearningContent("1", "Pendulum Simulator", ContentType.SIMULATION, 0.8f),
+                LearningContent("2", "Spring Simulator", ContentType.SIMULATION, 0.8f),
+                LearningContent("3", "Newton's Laws", ContentType.SIMULATION, 0.5f),
+                LearningContent("4", "Energy Conservation", ContentType.READING, 0.3f)
             )
         ),
         LearnSubject(
