@@ -144,8 +144,26 @@ fun SubjectLearningContent(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(subject.learningContent) { content ->
-                LearningContentCard(content,navController)
+            // Group content by type
+            val groupedContent = subject.learningContent.groupBy { it.type.name }
+
+            groupedContent.forEach { (type, contents) ->
+                // Add a heading for each type
+                item {
+                    Text(
+                        text = type, // Heading for content type
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                }
+
+                // Add content items under each type
+                items(contents) { content ->
+                    LearningContentCard(content, navController)
+                }
             }
         }
     }
@@ -190,11 +208,6 @@ fun LearningContentCard(content: LearningContent, navController: NavController) 
                     text = content.title,
                     color = Color.White,
                     style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = content.type.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White
                 )
                 LinearProgressIndicator(
                     progress = content.progress,

@@ -2,7 +2,11 @@ package pratheekv39.bridgelearn.io
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Group
@@ -11,14 +15,19 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -99,12 +108,21 @@ fun NavGraph(
                 NavigationBar {
                     screens.forEach { screen ->
                         NavigationBarItem(
-                            icon = { screen.icon() },
-                            label = {
-                                Text(
-                                    text = screen.title,
-                                    maxLines = 1,
-                                    softWrap = false
+                            icon = {
+                                Icon(
+                                    imageVector = when (screen) {
+                                        is Screen.Home -> Icons.Filled.Home
+                                        is Screen.Quiz -> Icons.Filled.Quiz
+                                        is Screen.Learn -> Icons.Filled.School
+                                        is Screen.Community -> Icons.Filled.Group
+                                        is Screen.Profile -> Icons.Filled.Person
+                                        else -> Icons.Filled.Description
+                                    },
+                                    contentDescription = screen.title,
+                                    modifier = Modifier.size(36.dp)
+                                        .padding(4.dp),
+                                    tint = if (currentRoute == screen.route) MaterialTheme.colorScheme.onSurface
+                                    else MaterialTheme.colorScheme.onSurface
                                 )
                             },
                             selected = currentRoute == screen.route,
@@ -118,7 +136,14 @@ fun NavGraph(
                                         restoreState = true
                                     }
                                 }
-                            }
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = if (currentRoute == screen.route) {
+                                    MaterialTheme.colorScheme.surfaceVariant
+                                } else {
+                                    Color.Transparent
+                                }
+                            )
                         )
                     }
                 }
