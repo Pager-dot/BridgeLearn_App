@@ -170,12 +170,12 @@ fun SubjectLearningContent(
 }
 
 @Composable
-fun LearningContentCard(content: LearningContent, navController: NavController) {
+fun LearningContentCard(content: LearningContent,navController: NavController,subject: LearnSubject) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                if (content.id == "1") {
+                if (content.id == "1" && content.title == "Acids and Base Simulator") {
                     navController.navigate("Interactive")
                 }
             }

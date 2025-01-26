@@ -1,5 +1,6 @@
 package pratheekv39.bridgelearn.io
 
+import PendulumSimulation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -104,7 +105,7 @@ fun NavGraph(
             val currentRoute = navBackStackEntry?.destination?.route
 
             // Hide the bottom bar when on the "Interactive" screen
-            if (currentRoute != "Interactive") {
+            if (currentRoute !in listOf("Interactive", "Pendulum", "Spring")) {
                 NavigationBar {
                     screens.forEach { screen ->
                         NavigationBarItem(
@@ -171,6 +172,14 @@ fun NavGraph(
             composable("Interactive") {
                 AcidBaseInteractiveLab(navController)
             }
+            composable("Pendulum") {
+                PendulumSimulation(navController)
+            }
+            composable("Spring") {
+                SpringSimulation(navController)
+            }
+
+
 
             composable(Screen.Learn.route) { LearnScreen(navController) }
 

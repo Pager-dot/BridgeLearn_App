@@ -16,7 +16,9 @@ class LearnViewModel : ViewModel() {
             learningContent = listOf(
                 LearningContent("1", "Introduction to Forces", ContentType.VIDEO, 0.8f),
                 LearningContent("2", "Newton's Laws", ContentType.SIMULATION, 0.5f),
-                LearningContent("3", "Energy Conservation", ContentType.READING, 0.3f)
+                LearningContent("3", "Energy Conservation", ContentType.READING, 0.3f),
+                LearningContent("4", "Pendulum Simulator", ContentType.SIMULATION, 0.8f),
+                LearningContent("5", "Spring Simulator", ContentType.SIMULATION, 0.8f)
             ),
             drawableResId = R.drawable.magnet_straight
         ),
