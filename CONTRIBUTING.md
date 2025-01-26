@@ -146,29 +146,37 @@ Use the following branch naming conventions:
 - `test/[test-name]` - For testing improvements
 
 ## Code Style and Standards <a name="code-style-and-standards"></a>
-- Follow Kotlin coding conventions
-- Implement MVVM architecture patterns
-- Use meaningful variable and function names
-- Include comments for complex logic
-- Follow Android Material Design guidelines
-- Maintain separation of concerns
+- Use camelCase for variables and functions.
+- Use PascalCase for class names.
+- Maintain proper indentation with 4 spaces.
+- Avoid hardcoding values; use constants or configuration files instead.
+- Organize the code into packages based on features (e.g., ui, data, viewmodel).
+- If Jetpack Compose is used, adhere to Jetpack Compose best practices for UI development.
+- Use linting tools like Ktlint or Detekt to ensure consistency.
 
 ## Testing Guidelines <a name="testing-guidelines"></a>
-All contributions must include appropriate tests:
-- Unit tests for business logic
-- Integration tests for component interaction
-- UI tests for user interactions
-- Minimum 80% code coverage for new features
-- All tests must pass before PR submission
+- Use JUnit for unit testing.
+- Use MockK for mocking dependencies.
+- Use Espresso for UI testing in Android projects.
+- Make sure to write tests for:
+- Business logic (unit tests).
+- API calls or database interactions (integration tests).
+- User workflows (UI tests).
+- Write clear and descriptive test names.
+- Add instructions to run tests using:
+`./gradlew testDebugUnitTest`
+`./gradlew connectedAndroidTest`
+- Set a goal for 80%+ code coverage where possible.
 
 ## Documentation Updates <a name="documentation-updates"></a>
-When updating documentation:
-- Keep README.md current
-- Update inline code comments
-- Document new features
-- Update API documentation
-- Include usage examples
-- Update version changelog
+- Ensure contributors update README.md for new features or modules they work on.
+- Add or update inline comments in the code for better clarity.
+- Update the CHANGELOG.md file for any new features, enhancements, or bug fixes.
+- Example for README.md updates:
+```
+Feature Name: A brief description of the feature and how to use it.
+Setup Changes: Steps required to configure or use the feature.
+```
 
 ## Submitting Issues <a name="submitting-issues"></a>
 When creating an issue:
@@ -216,7 +224,18 @@ We actively welcome your PRs. However, before working on changes, you must ensur
 - changes are made directly in the default (`main`) branch.
 
 ## Commit Message Format <a name="commit-message-format"></a>
-Follow conventional commits:
+- Use `feat:` for new features.
+- Use `fix`: for bug fixes.
+- Use `docs`: for documentation changes.
+- Use `test`: for adding/updating tests.
+- Use `style`: for formatting-only changes.
+
+Examples:
+```
+feat: Add GST calculation module
+fix: Resolve crash on EMI calculation
+docs: Update README for setup instructions
+```
 
 ## Project Structure <a name="project-structure"></a>
 ```
@@ -239,7 +258,13 @@ app/
 ```
 
 ## Acknowlegments <a name="acknowledgments"></a>
-Use this space to list resources you find helpful and would like to give credit to. 
+<h1 align = "center">Our Contributors ❤️</h2>
+<div align = "center">
+ <h3>Thank you for contributing to our repository.</h3>
+
+![Contributors](https://contrib.rocks/image?repo=pratheekv39/BridgeLearn_App)
+
+</div>
 
 ## License <a name="license"></a>
 
