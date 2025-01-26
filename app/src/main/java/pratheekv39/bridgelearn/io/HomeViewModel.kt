@@ -16,10 +16,10 @@ class HomeViewModel : ViewModel() {
     init {
         // Initialize with dummy data for now
         _subjects.value = listOf(
-            Subject("physics", "Physics", "Learn about forces and energy"),
-            Subject("chemistry", "Chemistry", "Explore matter and reactions"),
-            Subject("biology", "Biology", "Study life and living organisms"),
-            Subject("environmental", "Environmental Science", "Understand our planet")
+            Subject("physics", "Physics", "Learn about forces and energy", R.drawable.magnet_straight),
+            Subject("chemistry", "Chemistry", "Explore matter and reactions", R.drawable.flask),
+            Subject("biology", "Biology", "Study life and living organisms", R.drawable.flower),
+            Subject("computer", "Computer", "Learn about different computer tools", R.drawable.math_operations)
         )
     }
 

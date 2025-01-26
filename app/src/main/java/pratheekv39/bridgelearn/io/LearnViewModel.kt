@@ -14,11 +14,13 @@ class LearnViewModel : ViewModel() {
             name = "Physics",
             description = "Learn about forces and energy",
             learningContent = listOf(
-                LearningContent("1", "Pendulum Simulator", ContentType.SIMULATION, 0.8f),
-                LearningContent("2", "Spring Simulator", ContentType.SIMULATION, 0.8f),
-                LearningContent("3", "Newton's Laws", ContentType.SIMULATION, 0.5f),
-                LearningContent("4", "Energy Conservation", ContentType.READING, 0.3f)
-            )
+                LearningContent("1", "Introduction to Forces", ContentType.VIDEO, 0.8f),
+                LearningContent("2", "Newton's Laws", ContentType.SIMULATION, 0.5f),
+                LearningContent("3", "Energy Conservation", ContentType.READING, 0.3f),
+                LearningContent("4", "Pendulum Simulator", ContentType.SIMULATION, 0.8f),
+                LearningContent("5", "Spring Simulator", ContentType.SIMULATION, 0.8f)
+            ),
+            drawableResId = R.drawable.magnet_straight
         ),
         LearnSubject(
             id = "chemistry",
@@ -29,7 +31,8 @@ class LearnViewModel : ViewModel() {
                 LearningContent("2", "Atomic Structure", ContentType.VIDEO, 0.6f),
                 LearningContent("3", "Chemical Bonding", ContentType.SIMULATION, 0.4f),
                 LearningContent("4", "Periodic Table", ContentType.READING, 0.2f)
-            )
+            ),
+            drawableResId = R.drawable.flask
         )
     )
 

@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.AndroidViewModel
@@ -110,7 +112,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             id = "1",
             title = "Quick Learner",
             description = "Complete 5 lessons in a day",
-            icon = { Icon(Icons.Default.Star, null) },
+            icon = { Icon(Icons.Default.Star, null, tint = Color.White) },
             isUnlocked = true,
             progress = 1f
         ),
@@ -118,7 +120,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             id = "2",
             title = "Quiz Master",
             description = "Score 100% in 3 quizzes",
-            icon = { Icon(Icons.Default.EmojiEvents, null) },
+            icon = { Icon(Icons.Default.EmojiEvents, null, tint = Color.White) },
             isUnlocked = false,
             progress = 0.6f
         )
@@ -226,7 +228,7 @@ fun ProfileHeader(
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape).clickable { isImageZoomed = true },
-            color = MaterialTheme.colorScheme.primaryContainer
+            color = MaterialTheme.colorScheme.surfaceVariant
         ) {
             if (profileImageUri != null) {
                 AsyncImage(
@@ -289,7 +291,7 @@ fun ProfileHeader(
                         Surface(
                             modifier = Modifier
                                 .fillMaxSize(),
-                            color = MaterialTheme.colorScheme.primaryContainer
+                            color = MaterialTheme.colorScheme.surfaceVariant
                         ) {
                             if (profileImageUri != null) {
                                 AsyncImage(
@@ -341,28 +343,30 @@ fun ProfileHeader(
             onClick = { imagePickerLauncher.launch("image/*") },
             modifier = Modifier.padding(top = 8.dp)
         ) {
-            Icon(Icons.Default.Edit, contentDescription = null)
+            Icon(Icons.Default.Edit, contentDescription = null, tint = MaterialTheme.colorScheme.surfaceVariant)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Edit Profile")
+            Text("Edit Profile", style = TextStyle(color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium))
         }
     }
 }
 
 @Composable
 fun StatsSection(profile: UserProfile) {
+
+    Text(
+        text = "Learning Stats",
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onSurface,
+        modifier = Modifier.padding(bottom = 16.dp)
+    )
+
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(
-                text = "Learning Stats",
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
@@ -370,7 +374,7 @@ fun StatsSection(profile: UserProfile) {
                 StatItem(
                     value = profile.completedLessons.toString(),
                     label = "Lessons",
-                    icon = Icons.Default.School
+                    icon = Icons.Default.School,
                 )
                 StatItem(
                     value = profile.quizzesTaken.toString(),
@@ -399,15 +403,17 @@ fun StatItem(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary
+            tint = Color.White
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            color = Color.White
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.White
         )
     }
 }
@@ -449,10 +455,12 @@ fun AchievementCard(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = achievement.title,
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleSmall,
+                color = Color.White
             )
             LinearProgressIndicator(
                 progress = achievement.progress,
+                color = Color.White,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
@@ -466,6 +474,13 @@ fun SettingsSection(preferences: UserPreferences,
                     darkMode: Boolean,
                     onDarkModeChanged: (Boolean) -> Unit
 ) {
+
+    Text(
+        text = "Settings",
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -474,12 +489,6 @@ fun SettingsSection(preferences: UserPreferences,
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(
-                text = "Settings",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
             // Theme Setting
             SettingItem(
                 title = "Dark Mode",
@@ -487,7 +496,15 @@ fun SettingsSection(preferences: UserPreferences,
                 {
                     Switch(
                         checked =darkMode,
-                        onCheckedChange ={isChecked -> onDarkModeChanged(isChecked) }
+                        onCheckedChange ={isChecked -> onDarkModeChanged(isChecked) },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.surfaceVariant,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.background,
+                            checkedTrackColor = MaterialTheme.colorScheme.background,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
+                            checkedBorderColor = MaterialTheme.colorScheme.background,
+                            uncheckedBorderColor = MaterialTheme.colorScheme.background
+                        )
                     )
                 }
             )
@@ -499,19 +516,31 @@ fun SettingsSection(preferences: UserPreferences,
                 trailing = {
                     Switch(
                         checked = preferences.notificationsEnabled,
-                        onCheckedChange = { /* TODO: Implement notifications toggle */ }
+                        onCheckedChange = { /* TODO: Implement notifications toggle */ },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.surfaceVariant,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.background,
+                            checkedTrackColor = MaterialTheme.colorScheme.background,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
+                            checkedBorderColor = MaterialTheme.colorScheme.background,
+                            uncheckedBorderColor = MaterialTheme.colorScheme.background
+                        )
                     )
                 }
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Language Setting (TODO: Implement)
             SettingItem(
                 title = "Language",
                 icon = Icons.Default.Language,
                 trailing = {
-                    Text(preferences.language)
+                    Text(preferences.language, color = Color.White)
                 }
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             // Accessibility Options (TODO: Implement)
             SettingItem(
@@ -544,10 +573,10 @@ fun SettingItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
+                tint = Color.White
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Text(title)
+            Text(title, color = Color.White)
         }
         trailing()
     }

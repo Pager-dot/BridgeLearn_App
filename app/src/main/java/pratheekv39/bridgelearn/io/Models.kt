@@ -26,6 +26,7 @@ enum class ContentType {
     data class LearnSubject(
         val id: String,
         val name: String,
+        val drawableResId: Int,
         val description: String,
         val learningContent: List<LearningContent>
     )

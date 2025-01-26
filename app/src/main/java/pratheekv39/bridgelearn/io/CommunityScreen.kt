@@ -8,11 +8,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -119,13 +124,24 @@ fun CommunityScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         // Tabs
         ScrollableTabRow(
-            selectedTabIndex = tabs.indexOf(selectedTab)
+            selectedTabIndex = tabs.indexOf(selectedTab),
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[tabs.indexOf(selectedTab)]),
+                    color = MaterialTheme.colorScheme.surfaceVariant // Change this to your desired color
+                )
+            }
         ) {
             tabs.forEach { tab ->
                 Tab(
                     selected = selectedTab == tab,
                     onClick = { viewModel.selectTab(tab) },
-                    text = { Text(tab.title) }
+                    text = { Text(tab.title,
+                        style = TextStyle(fontFamily = AfacadFontFamily,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp)
+                    ) }
                 )
             }
         }
@@ -191,12 +207,14 @@ fun ForumPostCard(
         ) {
             Text(
                 text = post.title,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = post.content,
                 style = MaterialTheme.typography.bodyMedium,
+                color = Color.White,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -207,7 +225,8 @@ fun ForumPostCard(
             ) {
                 Text(
                     text = "by ${post.author}",
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White
                 )
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -219,11 +238,13 @@ fun ForumPostCard(
                         Icon(
                             Icons.Default.ThumbUp,
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(16.dp),
+                            tint = Color.White
                         )
                         Text(
                             text = "${post.likes}",
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.White
                         )
                     }
                     Row(
@@ -233,11 +254,13 @@ fun ForumPostCard(
                         Icon(
                             Icons.Default.Comment,
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(16.dp),
+                            tint = Color.White
                         )
                         Text(
                             text = "${post.replies}",
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.White
                         )
                     }
                 }
@@ -277,12 +300,14 @@ fun StudyGroupCard(
         ) {
             Text(
                 text = group.name,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = group.description,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
@@ -292,7 +317,8 @@ fun StudyGroupCard(
             ) {
                 Text(
                     text = "${group.memberCount} members",
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White
                 )
                 Button(
                     onClick = { /* TODO: Join/Leave group */ },
@@ -300,10 +326,13 @@ fun StudyGroupCard(
                         containerColor = if (group.isJoined)
                             MaterialTheme.colorScheme.surfaceVariant
                         else
-                            MaterialTheme.colorScheme.primary
+                            Color.White
                     )
                 ) {
-                    Text(if (group.isJoined) "Joined" else "Join")
+                    Text(if (group.isJoined) "Joined" else "Join",
+                        fontFamily = AfacadFontFamily,
+                        fontWeight = FontWeight.Medium,
+                        color = if (group.isJoined) Color.White else Color.Black)
                 }
             }
         }
@@ -324,7 +353,7 @@ fun ComingSoonSection(feature: String) {
                 Icons.Default.Construction,
                 contentDescription = null,
                 modifier = Modifier.size(48.dp),
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.surfaceVariant
             )
             Text(
                 text = "$feature Coming Soon!",
