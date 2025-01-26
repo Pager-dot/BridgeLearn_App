@@ -123,20 +123,27 @@ fun SubjectLearningContent(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(subject.learningContent) { content ->
-                LearningContentCard(content,navController)
+                LearningContentCard(content,navController,subject)
             }
         }
     }
 }
 
 @Composable
-fun LearningContentCard(content: LearningContent,navController: NavController) {
+fun LearningContentCard(content: LearningContent,navController: NavController,subject: LearnSubject) {
     Card(
         modifier = Modifier.fillMaxWidth().clickable {
-            if(content.id=="1"){
-                navController.navigate("Interactive")
-
-
+            when {
+                subject.id == "physics" && content.id == "1" -> {
+                    navController.navigate("Pendulum")
+                }
+                subject.id == "chemistry" && content.id == "1" -> {
+                    navController.navigate("Interactive")
+                }
+                subject.id == "physics" && content.id == "2" -> {
+                    navController.navigate("Spring")
+                }
+                // Add more conditions as needed
             }
         }
     ) {
