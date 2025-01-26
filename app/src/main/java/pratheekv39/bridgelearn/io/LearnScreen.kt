@@ -162,7 +162,7 @@ fun SubjectLearningContent(
 
                 // Add content items under each type
                 items(contents) { content ->
-                    LearningContentCard(content, navController)
+                    LearningContentCard(content, navController,subject)
                 }
             }
         }
