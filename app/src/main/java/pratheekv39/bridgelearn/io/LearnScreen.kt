@@ -170,13 +170,15 @@ fun SubjectLearningContent(
 }
 
 @Composable
-fun LearningContentCard(content: LearningContent,navController: NavController,subject: LearnSubject) {
+fun LearningContentCard(content: LearningContent, navController: NavController, subject: LearnSubject) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                if (content.id == "1" && content.title == "Acids and Base Simulator") {
-                    navController.navigate("Interactive")
+                when {
+                    content.title == "Acids and Base Simulator" -> navController.navigate("Interactive")
+                    content.title == "Pendulum Simulator" -> navController.navigate("Pendulum")
+                    content.title == "Spring Simulator" -> navController.navigate("Spring")
                 }
             }
     ) {
@@ -186,21 +188,20 @@ fun LearningContentCard(content: LearningContent,navController: NavController,su
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icon based on content type
             Icon(
                 painter = painterResource(
                     id = when (content.type.name) {
-                        "READING" -> R.drawable.book_open_text // Replace with your reading icon resource
-                        "SIMULATION" -> R.drawable.waves // Replace with your simulation icon resource
-                        "VIDEO" -> R.drawable.monitor_play // Replace with your video icon resource
-                        else -> R.drawable.ic_launcher_foreground // Fallback icon if type doesn't match
+                        "READING" -> R.drawable.book_open_text
+                        "SIMULATION" -> R.drawable.waves
+                        "VIDEO" -> R.drawable.monitor_play
+                        else -> R.drawable.ic_launcher_foreground
                     }
                 ),
                 contentDescription = "${content.type.name} Icon",
-                tint = Color.White, // Optional: Change the color of the icon
+                tint = Color.White,
                 modifier = Modifier
-                    .size(48.dp) // Adjust size as needed
-                    .padding(end = 16.dp) // Add spacing between the icon and text
+                    .size(48.dp)
+                    .padding(end = 16.dp)
             )
 
             Column(modifier = Modifier.weight(1f)) {
