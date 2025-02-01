@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -105,7 +106,7 @@ fun NavGraph(
             val currentRoute = navBackStackEntry?.destination?.route
 
             // Hide the bottom bar when on the "Interactive" screen
-            if (currentRoute !in listOf("Interactive", "Pendulum", "Spring")) {
+            if (currentRoute !in listOf("Interactive", "Pendulum", "Spring", "PeriodicTable")) {
                 NavigationBar {
                     screens.forEach { screen ->
                         NavigationBarItem(
@@ -179,7 +180,10 @@ fun NavGraph(
                 SpringSimulation(navController)
             }
 
-
+            composable("PeriodicTable") {
+                val context = LocalContext.current  // Get the application context
+                PeriodicTableScreen(navController, context)
+            }
 
             composable(Screen.Learn.route) { LearnScreen(navController) }
 
