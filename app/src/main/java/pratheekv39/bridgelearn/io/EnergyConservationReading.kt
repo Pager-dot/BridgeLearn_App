@@ -351,6 +351,7 @@ fun FlashCard() {
                         "                          ~ Law of Conservation of Energy",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp),
                 textAlign = TextAlign.Center,
+                color = Color.Black,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
