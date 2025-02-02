@@ -106,7 +106,7 @@ fun NavGraph(
             val currentRoute = navBackStackEntry?.destination?.route
 
             // Hide the bottom bar when on the "Interactive" screen
-            if (currentRoute !in listOf("Interactive", "Pendulum", "Spring", "PeriodicTable")) {
+            if (currentRoute !in listOf("Interactive", "Pendulum", "Spring", "PeriodicTable", "EnergyConservation")) {
                 NavigationBar {
                     screens.forEach { screen ->
                         NavigationBarItem(
@@ -183,6 +183,10 @@ fun NavGraph(
             composable("PeriodicTable") {
                 val context = LocalContext.current  // Get the application context
                 PeriodicTableScreen(navController, context)
+            }
+
+            composable("EnergyConservation") {
+                EnergyConservationScreen(navController)
             }
 
             composable(Screen.Learn.route) { LearnScreen(navController) }
