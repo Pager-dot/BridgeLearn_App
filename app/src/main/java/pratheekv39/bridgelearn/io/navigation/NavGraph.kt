@@ -1,13 +1,10 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.navigation
 
 import PendulumSimulation
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Group
@@ -21,13 +18,11 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,6 +33,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import pratheekv39.bridgelearn.io.ui.simulations.AcidBaseInteractiveLab
+import pratheekv39.bridgelearn.io.ui.screens.community.CommunityScreen
+import pratheekv39.bridgelearn.io.ui.readings.EnergyConservationScreen
+import pratheekv39.bridgelearn.io.ui.screens.home.HomeScreen
+import pratheekv39.bridgelearn.io.ui.screens.learn.LearnScreen
+import pratheekv39.bridgelearn.io.ui.readings.PeriodicTableScreen
+import pratheekv39.bridgelearn.io.ui.screens.profile.ProfileScreen
+import pratheekv39.bridgelearn.io.ui.screens.quiz.QuizScreen
+import pratheekv39.bridgelearn.io.ui.simulations.SpringSimulation
+import pratheekv39.bridgelearn.io.ui.screens.SubjectScreen
+import pratheekv39.bridgelearn.io.theme.ThemeViewModel
 
 sealed class Screen(
     val route: String,
@@ -88,7 +94,7 @@ sealed class Screen(
 fun NavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Home.route ,
+    startDestination: String = Screen.Home.route,
     themeViewModel: ThemeViewModel = viewModel()
 
 ) {

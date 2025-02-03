@@ -1,8 +1,12 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.domain.viewmodels
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import pratheekv39.bridgelearn.io.R
+import pratheekv39.bridgelearn.io.data.models.ContentType
+import pratheekv39.bridgelearn.io.data.models.LearnSubject
+import pratheekv39.bridgelearn.io.data.models.LearningContent
 
 class LearnViewModel : ViewModel() {
     private val _selectedSubject = MutableStateFlow<LearnSubject?>(null)

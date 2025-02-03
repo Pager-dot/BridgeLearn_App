@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.ui.screens.community
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -23,6 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import pratheekv39.bridgelearn.io.theme.AfacadFontFamily
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 

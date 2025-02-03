@@ -1,10 +1,13 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.domain.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import pratheekv39.bridgelearn.io.R
+import pratheekv39.bridgelearn.io.ui.screens.Subject
+import pratheekv39.bridgelearn.io.data.state.PromptState
 
 class HomeViewModel : ViewModel() {
     private val _subjects = MutableStateFlow<List<Subject>>(emptyList())

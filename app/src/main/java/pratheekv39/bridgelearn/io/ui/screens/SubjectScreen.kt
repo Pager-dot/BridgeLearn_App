@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,9 +8,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import java.net.IDN
+import pratheekv39.bridgelearn.io.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

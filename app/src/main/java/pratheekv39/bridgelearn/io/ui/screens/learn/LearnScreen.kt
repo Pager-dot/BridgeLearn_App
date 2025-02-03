@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.ui.screens.learn
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,14 +11,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import pratheekv39.bridgelearn.io.data.models.LearnSubject
+import pratheekv39.bridgelearn.io.domain.viewmodels.LearnViewModel
+import pratheekv39.bridgelearn.io.data.models.LearningContent
+import pratheekv39.bridgelearn.io.R
 
 @Composable
 fun LearnScreen(

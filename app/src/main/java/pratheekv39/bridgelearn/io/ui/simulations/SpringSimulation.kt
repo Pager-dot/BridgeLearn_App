@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.ui.simulations
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Canvas
