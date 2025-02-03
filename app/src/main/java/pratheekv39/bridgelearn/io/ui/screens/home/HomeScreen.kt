@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.ui.screens.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,7 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import javax.security.auth.Subject
+import pratheekv39.bridgelearn.io.ui.components.AIPromptCard
+import pratheekv39.bridgelearn.io.domain.viewmodels.HomeViewModel
+import pratheekv39.bridgelearn.io.R
+import pratheekv39.bridgelearn.io.ui.components.SubjectCardRow
+import pratheekv39.bridgelearn.io.ui.screens.Subject
 
 @Composable
 fun HomeScreen(
@@ -18,10 +22,30 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel()
 ) {
     val subjects = remember { listOf(
-        Subject("physics", "Physics", "Learn about forces and energy", R.drawable.magnet_straight),
-        Subject("chemistry", "Chemistry", "Explore matter and reactions", R.drawable.flask),
-        Subject("biology", "Biology", "Study life and living organisms", R.drawable.flower),
-        Subject("computer", "Computer", "Explore different computer tools", R.drawable.math_operations)
+        Subject(
+            "physics",
+            "Physics",
+            "Learn about forces and energy",
+            R.drawable.magnet_straight
+        ),
+        Subject(
+            "chemistry",
+            "Chemistry",
+            "Explore matter and reactions",
+            R.drawable.flask
+        ),
+        Subject(
+            "biology",
+            "Biology",
+            "Study life and living organisms",
+            R.drawable.flower
+        ),
+        Subject(
+            "computer",
+            "Computer",
+            "Explore different computer tools",
+            R.drawable.math_operations
+        )
     )}
 
     Column(

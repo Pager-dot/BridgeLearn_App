@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.data.state
 
 sealed class PromptState {
     object Idle : PromptState()

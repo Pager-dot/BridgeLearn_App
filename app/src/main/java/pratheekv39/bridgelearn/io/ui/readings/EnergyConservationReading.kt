@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.ui.readings
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import pratheekv39.bridgelearn.io.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

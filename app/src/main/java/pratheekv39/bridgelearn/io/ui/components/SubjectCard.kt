@@ -1,11 +1,8 @@
 // SubjectCard.kt
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Book
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,6 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
+import pratheekv39.bridgelearn.io.R
+import pratheekv39.bridgelearn.io.ui.screens.Subject
 
 @Composable
 fun SubjectCard(

@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.ui.readings
 
 import android.content.Context
 import androidx.compose.foundation.background
@@ -48,6 +48,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import pratheekv39.bridgelearn.io.theme.AccentOrange
+import pratheekv39.bridgelearn.io.theme.AfacadFontFamily
+import pratheekv39.bridgelearn.io.theme.BackgroundLight
+import pratheekv39.bridgelearn.io.theme.LightBlue
 import java.io.InputStreamReader
 
 data class Element(

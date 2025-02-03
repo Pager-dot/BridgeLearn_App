@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.data.models
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

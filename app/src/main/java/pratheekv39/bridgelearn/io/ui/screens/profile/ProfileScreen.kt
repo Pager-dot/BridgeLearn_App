@@ -1,4 +1,4 @@
-package pratheekv39.bridgelearn.io
+package pratheekv39.bridgelearn.io.ui.screens.profile
 
 import android.app.Application
 import android.content.Context
@@ -36,6 +36,7 @@ import coil.compose.AsyncImage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import pratheekv39.bridgelearn.io.R
 
 // Data Classes
 data class UserProfile(
@@ -149,7 +150,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    viewModel: ProfileViewModel = viewModel() ,
+    viewModel: ProfileViewModel = viewModel(),
     darkMode: Boolean,
     onDarkModeChanged: (Boolean) -> Unit
 ) {
