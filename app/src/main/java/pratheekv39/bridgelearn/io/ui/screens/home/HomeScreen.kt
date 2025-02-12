@@ -1,11 +1,14 @@
 package pratheekv39.bridgelearn.io.ui.screens.home
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -47,6 +50,12 @@ fun HomeScreen(
             R.drawable.math_operations
         )
     )}
+    var showExitDialog by remember { mutableStateOf(false) }
+    val activity = LocalContext.current as? Activity
+
+    BackHandler {
+        showExitDialog = true
+    }
 
     Column(
         modifier = modifier
@@ -103,5 +112,24 @@ fun HomeScreen(
                 // Handle prompt submission
             }
         )
+        if (showExitDialog) {
+            AlertDialog(
+                onDismissRequest = { showExitDialog = false },
+                title = { Text("Exit App") },
+                text = { Text("Are you sure you want to exit?") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        activity?.finish()
+                    }) {
+                        Text("Yes")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showExitDialog = false }) {
+                        Text("No")
+                    }
+                }
+            )
+        }
     }
 }
