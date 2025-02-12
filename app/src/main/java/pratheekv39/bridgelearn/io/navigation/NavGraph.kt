@@ -44,6 +44,7 @@ import pratheekv39.bridgelearn.io.ui.screens.quiz.QuizScreen
 import pratheekv39.bridgelearn.io.ui.simulations.SpringSimulation
 import pratheekv39.bridgelearn.io.ui.screens.SubjectScreen
 import pratheekv39.bridgelearn.io.theme.ThemeViewModel
+import pratheekv39.bridgelearn.io.ui.simulations.NewtonsLawsSimulation
 
 sealed class Screen(
     val route: String,
@@ -112,7 +113,7 @@ fun NavGraph(
             val currentRoute = navBackStackEntry?.destination?.route
 
             // Hide the bottom bar when on the "Interactive" screen
-            if (currentRoute !in listOf("Interactive", "Pendulum", "Spring", "PeriodicTable", "EnergyConservation")) {
+            if (currentRoute !in listOf("Interactive", "Pendulum", "Spring", "PeriodicTable", "EnergyConservation","NewtonLaws")) {
                 NavigationBar {
                     screens.forEach { screen ->
                         NavigationBarItem(
@@ -193,6 +194,9 @@ fun NavGraph(
 
             composable("EnergyConservation") {
                 EnergyConservationScreen(navController)
+            }
+            composable("NewtonLaws") {
+                NewtonsLawsSimulation(navController)
             }
 
             composable(Screen.Learn.route) { LearnScreen(navController) }
