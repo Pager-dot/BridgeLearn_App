@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import pratheekv39.bridgelearn.io.navigation.NavGraph
 import pratheekv39.bridgelearn.io.theme.HomeTheme
 import pratheekv39.bridgelearn.io.theme.ThemeViewModel
+import pratheekv39.bridgelearn.io.ui.simulations.IonicBondingGame
 import pratheekv39.bridgelearn.io.ui.simulations.NewtonsLawsSimulation
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   NavGraph()
+                    NavGraph()
                 }
             }
         }

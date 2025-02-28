@@ -182,6 +182,7 @@ fun LearningContentCard(content: LearningContent, navController: NavController, 
                     content.title == "Periodic Table" -> navController.navigate("PeriodicTable")
                     content.title == "Energy Conservation" -> navController.navigate("EnergyConservation")
                     content.title == "Newton's Laws" -> navController.navigate("NewtonLaws")
+                    content.title == "Chemical Bonding" -> navController.navigate("ChemicalBonding")
                 }
             }
     ) {
