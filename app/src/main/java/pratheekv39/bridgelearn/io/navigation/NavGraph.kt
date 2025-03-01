@@ -44,6 +44,7 @@ import pratheekv39.bridgelearn.io.ui.screens.quiz.QuizScreen
 import pratheekv39.bridgelearn.io.ui.simulations.SpringSimulation
 import pratheekv39.bridgelearn.io.ui.screens.SubjectScreen
 import pratheekv39.bridgelearn.io.theme.ThemeViewModel
+import pratheekv39.bridgelearn.io.ui.simulations.IonicBondingGame
 import pratheekv39.bridgelearn.io.ui.simulations.NewtonsLawsSimulation
 
 sealed class Screen(
@@ -197,6 +198,9 @@ fun NavGraph(
             }
             composable("NewtonLaws") {
                 NewtonsLawsSimulation(navController)
+            }
+            composable("ChemicalBonding") {
+                IonicBondingGame(navController)
             }
 
             composable(Screen.Learn.route) { LearnScreen(navController) }
